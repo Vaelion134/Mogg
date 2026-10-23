@@ -1,0 +1,467 @@
+﻿<Window x:Class="моггейм.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MO3GAME" Height="659" Width="1000" MinWidth="800" MinHeight="500"
+        Background="#1A1A1A">
+
+    <Window.Resources>
+
+        <Style x:Key="HeaderButton" TargetType="Button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="12,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BuyButton" TargetType="Button" BasedOn="{StaticResource HeaderButton}">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Background" Value="#FF9D3EEE"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="NavButton" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF2D2D2D"/>
+                    <Setter Property="Foreground" Value="#FFC7B7F5"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#FF9D3EEE"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="#2D2D2D"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Width" Value="230"/>
+        </Style>
+
+        <Style x:Key="Badge" TargetType="Border">
+            <Setter Property="Background" Value="#FF9D3EEE"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Padding" Value="6,3"/>
+            <Setter Property="CornerRadius" Value="3"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="CardTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="CardGenre" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,2,0,10"/>
+        </Style>
+
+        <Style x:Key="CardPrice" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+
+        <Style x:Key="CardOldPrice" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextDecorations" Value="Strikethrough"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="0,0,0,2"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.ColumnSpan="2" Background="#111111" Padding="15,0">
+            <Grid>
+                <TextBlock Text="MO3GAME" Foreground="#FFAA42FF" FontSize="22" FontWeight="Bold" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button x:Name="CartButton" Content="Корзина" MinWidth="80" Style="{StaticResource HeaderButton}"
+                            Background="#FF292F3E" Click="Cart_Click"/>
+
+                    <StackPanel x:Name="GuestPanel" Orientation="Horizontal">
+                        <Button Content="Войти" Width="80" Style="{StaticResource HeaderButton}"
+                                Background="#FF292F3E" Click="Login_Click"/>
+                        <Button Content="Регистрация" Width="110" Style="{StaticResource HeaderButton}"
+                                Background="#FF9D3EEE" Click="Register_Click"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="UserPanel" Orientation="Horizontal" Visibility="Collapsed">
+                        <TextBlock x:Name="UserNameText" Foreground="#FFC7B7F5" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="8,0"/>
+                        <Button Content="Выйти" Width="80" Style="{StaticResource HeaderButton}"
+                                Background="#FF292F3E" Click="Logout_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Background="#222222" Margin="10" CornerRadius="5" Padding="5,15">
+            <StackPanel>
+                <TextBlock Text="Категории" Foreground="#FFC7B7F5" FontSize="14" Margin="15,0,0,15" FontWeight="Bold"/>
+                <RadioButton x:Name="AllGamesRadio" Content="Все игры" Tag="Все игры" Style="{StaticResource NavButton}" Checked="Category_Checked"/>
+                <RadioButton Content="Экшены" Tag="Экшены" Style="{StaticResource NavButton}" Checked="Category_Checked"/>
+                <RadioButton Content="RPG" Tag="RPG" Style="{StaticResource NavButton}" Checked="Category_Checked"/>
+                <RadioButton Content="Шутеры" Tag="Шутеры" Style="{StaticResource NavButton}" Checked="Category_Checked"/>
+                <RadioButton Content="Стратегии" Tag="Стратегии" Style="{StaticResource NavButton}" Checked="Category_Checked"/>
+                <RadioButton Content="Гонки" Tag="Гонки" Style="{StaticResource NavButton}" Checked="Category_Checked"/>
+                <RadioButton Content="Хорроры" Tag="Хорроры" Style="{StaticResource NavButton}" Checked="Category_Checked"/>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer x:Name="MainScroll" Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" Padding="12,10,12,20">
+            <StackPanel>
+                <TextBlock x:Name="EmptyText" Text="В этой категории пока нет игр." Foreground="Gray" FontSize="16"
+                           Margin="8,20,0,0" Visibility="Collapsed"/>
+
+                <StackPanel x:Name="SaleSection">
+                    <TextBlock Text="Распродажа игр" Foreground="White" FontSize="20" FontWeight="Bold" Margin="8,0,0,10"/>
+                    <WrapPanel x:Name="SaleList">
+                        <Border Tag="Гонки" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="Image2.png" Stretch="Uniform"/>
+                                    <Border Style="{StaticResource Badge}">
+                                        <TextBlock Text="-30%" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                    </Border>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Forza Horizon 6"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="Гонки / Симулятор"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="2449 ₽"/>
+                                        <TextBlock Style="{StaticResource CardOldPrice}" Text="3499 ₽"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="Forza Horizon 6;2449" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border Tag="Хорроры, Экшены" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="Image3.png" Stretch="Uniform"/>
+                                    <Border Style="{StaticResource Badge}">
+                                        <TextBlock Text="-50%" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                    </Border>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Resident Evil Requiem"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="Хоррор / Экшен"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="1149 ₽"/>
+                                        <TextBlock Style="{StaticResource CardOldPrice}" Text="2299 ₽"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="Resident Evil Requiem;1149" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border Tag="Экшены" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="Image4.png" Stretch="Uniform"/>
+                                    <Border Style="{StaticResource Badge}">
+                                        <TextBlock Text="-60%" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                    </Border>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Red Dead Redemption 2"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="Экшен / Открытый мир"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="999 ₽"/>
+                                        <TextBlock Style="{StaticResource CardOldPrice}" Text="2499 ₽"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="Red Dead Redemption 2;999" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </WrapPanel>
+                    <UniformGrid x:Name="BigList" Columns="2" Margin="0,0,0,20">
+                        <Border Tag="Экшены" Background="#2D2D2D" Margin="10" CornerRadius="8" Padding="15">
+                            <StackPanel>
+                                <Grid Height="180" Margin="0,0,0,15">
+                                    <Image Source="Image6.png" Stretch="UniformToFill"/>
+                                    <Border Background="#FF9D3EEE" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="8,4" CornerRadius="4" Margin="10">
+                                        <TextBlock Text="-20%" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                                    </Border>
+                                </Grid>
+                                <TextBlock Text="The Last of Us Part I" Foreground="White" FontSize="18" FontWeight="Bold"/>
+                                <TextBlock Text="Испытайте эмоциональную историю и незабываемых персонажей в обновленной версии культовой игры." Foreground="LightGray" FontSize="13" TextWrapping="Wrap" Margin="0,5,0,15"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="2799 ₽" Foreground="#FFC7B7F5" FontSize="20" FontWeight="Bold" Margin="0,0,10,0"/>
+                                        <TextBlock Text="3499 ₽" Foreground="Gray" FontSize="14" TextDecorations="Strikethrough" VerticalAlignment="Bottom" Margin="0,0,0,2"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="The Last of Us Part I;2799" Width="90" Height="35" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border Tag="Экшены" Background="#2D2D2D" Margin="10" CornerRadius="8" Padding="15">
+                            <StackPanel>
+                                <Grid Height="180" Margin="0,0,0,15">
+                                    <Image Source="Image5.png" Stretch="UniformToFill"/>
+                                    <Border Background="#FF9D3EEE" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="8,4" CornerRadius="4" Margin="10">
+                                        <TextBlock Text="-40%" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                                    </Border>
+                                </Grid>
+                                <TextBlock Text="The Last of Us Part II" Foreground="White" FontSize="18" FontWeight="Bold"/>
+                                <TextBlock Text="Продолжение сложного и драматичного путешествия Элли в жестоком постапокалиптическом мире." Foreground="LightGray" FontSize="13" TextWrapping="Wrap" Margin="0,5,0,15"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="2399 ₽" Foreground="#FFC7B7F5" FontSize="20" FontWeight="Bold" Margin="0,0,10,0"/>
+                                        <TextBlock Text="3999 ₽" Foreground="Gray" FontSize="14" TextDecorations="Strikethrough" VerticalAlignment="Bottom" Margin="0,0,0,2"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="The Last of Us Part II;2399" Width="90" Height="35" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+                </StackPanel>
+
+                <StackPanel x:Name="NewSection">
+                    <TextBlock Text="Новинки" Foreground="White" FontSize="20" FontWeight="Bold" Margin="8,0,0,10"/>
+                    <ScrollViewer x:Name="NewScroller" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                                  PreviewMouseWheel="NewScroller_PreviewMouseWheel" Margin="0,0,0,20">
+                        <StackPanel x:Name="NewList" Orientation="Horizontal">
+                            <Border Tag="RPG, Экшены" Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <Grid Height="270" Margin="0,0,0,10">
+                                        <Border Background="#4A3B1E" CornerRadius="4">
+                                            <Image Source="Image7.png" Stretch="UniformToFill"/>
+                                        </Border>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="Elden Ring"/>
+                                    <TextBlock Style="{StaticResource CardGenre}" Text="RPG / Экшен"/>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource CardPrice}" Text="3299 ₽"/>
+                                        </StackPanel>
+                                        <Button Content="Купить" Tag="Elden Ring;3299" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                            <Border Tag="Стратегии" Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <Grid Height="270" Margin="0,0,0,10">
+                                        <Border Background="#1F4E5F" CornerRadius="4">
+                                            <Image Source="Image8.png" Stretch="UniformToFill"/>
+                                        </Border>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="Civilization VI"/>
+                                    <TextBlock Style="{StaticResource CardGenre}" Text="Стратегия / Пошаговая"/>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource CardPrice}" Text="1299 ₽"/>
+                                        </StackPanel>
+                                        <Button Content="Купить" Tag="Civilization VI;1299" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                            <Border Tag="Стратегии" Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <Grid Height="270" Margin="0,0,0,10">
+                                        <Border Background="#5A3A1F" CornerRadius="4">
+                                            <Image Source="Image9.png" Stretch="UniformToFill"/>
+                                        </Border>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="Age of Empires IV"/>
+                                    <TextBlock Style="{StaticResource CardGenre}" Text="Стратегия / RTS"/>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource CardPrice}" Text="1799 ₽"/>
+                                        </StackPanel>
+                                        <Button Content="Купить" Tag="Age of Empires IV;1799" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                            <Border Tag="Шутеры, Экшены" Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <Grid Height="270" Margin="0,0,0,10">
+                                        <Border Background="#6B1D1D" CornerRadius="4">
+                                            <Image Source="Image10.png" Stretch="UniformToFill"/>
+                                        </Border>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="DOOM Eternal"/>
+                                    <TextBlock Style="{StaticResource CardGenre}" Text="Шутер / Экшен"/>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource CardPrice}" Text="1599 ₽"/>
+                                        </StackPanel>
+                                        <Button Content="Купить" Tag="DOOM Eternal;1599" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                            <Border Tag="Хорроры, Экшены" Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <Grid Height="270" Margin="0,0,0,10">
+                                        <Border Background="#1D2B3A" CornerRadius="4">
+                                            <Image Source="Image11.png" Stretch="UniformToFill"/>
+                                        </Border>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="Dead Space"/>
+                                    <TextBlock Style="{StaticResource CardGenre}" Text="Хоррор / Экшен"/>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource CardPrice}" Text="2499 ₽"/>
+                                        </StackPanel>
+                                        <Button Content="Купить" Tag="Dead Space;2499" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                            <Border Tag="Гонки" Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <Grid Height="270" Margin="0,0,0,10">
+                                        <Border Background="#2E1F5A" CornerRadius="4">
+                                            <Image Source="Image12.png" Stretch="UniformToFill"/>
+                                        </Border>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="Need for Speed Heat"/>
+                                    <TextBlock Style="{StaticResource CardGenre}" Text="Гонки / Аркада"/>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource CardPrice}" Text="1399 ₽"/>
+                                        </StackPanel>
+                                        <Button Content="Купить" Tag="Need for Speed Heat;1399" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </StackPanel>
+
+                <StackPanel x:Name="PopularSection">
+                    <TextBlock Text="Популярное сейчас" Foreground="White" FontSize="20" FontWeight="Bold" Margin="8,0,0,10"/>
+                    <WrapPanel x:Name="PopularList">
+                        <Border Tag="RPG" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="https://upload.wikimedia.org/wikipedia/ru/a/a2/The_Witcher_3-_Wild_Hunt_Cover.jpg" Stretch="Uniform"/>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="The Witcher 3"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="RPG / Открытый мир"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="999 ₽"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="The Witcher 3;999" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border Tag="RPG, Экшены" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="https://upload.wikimedia.org/wikipedia/ru/b/bb/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80%D0%BD%D0%BE%D0%B9_%D0%B8%D0%B3%D1%80%D1%8B_Cyberpunk_2077.jpg" Stretch="Uniform"/>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Cyberpunk 2077"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="Экшен / RPG"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="1999 ₽"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="Cyberpunk 2077;1999" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border Tag="Экшены" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="https://upload.wikimedia.org/wikipedia/ru/c/c8/GTAV_Official_Cover_Art.jpg" Stretch="Uniform"/>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="GTA V"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="Экшен / Песочница"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="1499 ₽"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="GTA V;1499" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border Tag="Стратегии" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="https://upload.wikimedia.org/wikipedia/ru/8/8e/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_Dota_2.jpg" Stretch="Uniform"/>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Dota 2"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="MOBA / Стратегия"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="Бесплатно"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="Dota 2;0" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border Tag="RPG" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="Image1.png" Stretch="Uniform"/>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Minecraft"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="RPG / Открытый мир"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="2600 ₽"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="Minecraft;2600" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border Tag="Шутеры" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Height="270" Margin="0,0,0,10">
+                                    <Image Source="https://www.kinonews.ru/insimgs/2023/poster/poster119114_1.webp" Stretch="Uniform"/>
+                                </Grid>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Counter Strike 2"/>
+                                <TextBlock Style="{StaticResource CardGenre}" Text="Шутер"/>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardPrice}" Text="Бесплатно"/>
+                                    </StackPanel>
+                                    <Button Content="Купить" Tag="Counter Strike 2;0" Width="76" Style="{StaticResource BuyButton}" Click="Buy_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </WrapPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
